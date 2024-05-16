@@ -15,7 +15,8 @@ func main() {
 	//	fmt.Println(err)
 	//}
 	gw := goweb.New()
-	gw.Add("/hello1", func(w http.ResponseWriter, r *http.Request) {
+	user := gw.Group("user")
+	user.Add("/hello", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "Hello word")
 	})
 	gw.Run()
