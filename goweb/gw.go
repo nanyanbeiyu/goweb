@@ -21,8 +21,12 @@ type routerGroup struct {
 }
 
 func (r *router) Group(name string) *routerGroup {
+	var rname string
+	if name != "" {
+		rname = "/" + name
+	}
 	rg := &routerGroup{
-		name:           name,
+		name:           rname,
 		handlerFuncMap: make(map[string]HandlerFunc),
 	}
 	r.routerGroups = append(r.routerGroups, rg)
@@ -43,8 +47,8 @@ func (e *Engine) Run() {
 	// user key:get value:func
 	for _, group := range e.routerGroups {
 		for addr, handlerFunc := range group.handlerFuncMap {
-			fmt.Println("/" + group.name + addr)
-			http.HandleFunc("/"+group.name+addr, handlerFunc)
+			fmt.Println(group.name + addr)
+			http.HandleFunc(group.name+addr, handlerFunc)
 		}
 	}
 
